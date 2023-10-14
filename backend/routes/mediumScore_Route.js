@@ -7,8 +7,8 @@ const {
 
 const router = require("express").Router();
 //GET ALL USERS
-router.route('/').post( mediumScoreController.create).get(mediumScoreController.getAll).delete(mediumScoreController.deleteAll);
-router.route('/:id').put( mediumScoreController.update).post(mediumScoreController.findOne).delete(mediumScoreController.delete);
+router.route('/').post( mediumScoreController.create).get(mediumScoreController.getAll).delete(mediumScoreController.deleteAll).put( mediumScoreController.update);
+router.route('/:id').post(mediumScoreController.findOne).delete(mediumScoreController.delete);
 
 //DELETE USER
 

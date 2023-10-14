@@ -26,7 +26,7 @@ router.post('/create_payment_url', function (req, res, next) {
     let orderId = moment(date).format('DDHHmmss');
     let amount = req.body.amount;
     let bankCode = req.body.bankCode;
-
+    let id = req.body.reg_id
     let locale = req.body.language;
     if (locale === null || locale === '') {
         locale = 'vn';
@@ -39,7 +39,9 @@ router.post('/create_payment_url', function (req, res, next) {
     vnp_Params['vnp_Locale'] = locale;
     vnp_Params['vnp_CurrCode'] = currCode;
     vnp_Params['vnp_TxnRef'] = orderId;
-    vnp_Params['vnp_OrderInfo'] = 'Thanh toan cho ma GD:' + orderId;
+    // vnp_Params['vnp_RegId'] = id;
+
+    vnp_Params['vnp_OrderInfo'] = id;
     vnp_Params['vnp_OrderType'] = 'other';
     vnp_Params['vnp_Amount'] = amount * 100;
     vnp_Params['vnp_ReturnUrl'] = returnUrl;

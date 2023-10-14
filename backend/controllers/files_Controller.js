@@ -24,7 +24,7 @@ const FilesController = {
     create: async (req, res) => {
         try {
             // Xử lý tệp tải lên bằng Multer
-            upload.array('files',20)(req, res, function (err) {
+            upload.array('files', 20)(req, res, function (err) {
                 if (err) {
                     return res.status(400).json({ message: 'Lỗi khi tải lên tệp.' });
                 }
@@ -46,7 +46,17 @@ const FilesController = {
 
                 const extension = path.extname(file.originalname).slice(1); // Lấy đuôi của tệp
                 const link = 'http://localhost:3000/uploads/' + file.filename
-                const files = { name: file.originalname, name_change: file.filename, link: link, type: extension,courses_id:req.body?.courses_id ,subscribers_id:req.body?.subscribers_id}
+                const files = {
+                    name: file.originalname,
+                    name_change: file.filename,
+                    link: link, type: extension,
+                    courses_id: req.body?.courses_id,
+                    subscribers_id: req.body?.subscribers_id,
+                    posts_id: req.body?.posts_id,
+                    personnel_id: req.body?.personnel_id,
+                    test: req.body?.test
+                }
+                console.log(req.body.subscribers_id);
                 const user = await Files.create(files)
             });
             res.status(200).json(true)

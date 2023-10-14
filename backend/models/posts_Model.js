@@ -3,7 +3,7 @@ const knex = require('knex')(require('../database/dbConnect'));
 const Posts = {
     create: async (payload) => {
         return await knex('posts')
-            .insert({ name: payload.name})
+            .insert(payload)
             .then((row) => {
                 return row
             }).catch(err => {
@@ -21,7 +21,7 @@ const Posts = {
     },
     find: async (payload) => {
         return await knex('posts').where(payload)
-            .select("*")
+            .select("*").orderBy('create_at', 'desc')
             .then((row) => {
                 return row
             }).catch(err => {
@@ -44,7 +44,7 @@ const Posts = {
         //     })
 
         return await knex('posts')
-            .select('*')
+            .select('*').orderBy('create_at', 'desc')
             .then((row) => {
                 return row
             }).catch(err => {
@@ -52,8 +52,8 @@ const Posts = {
             })
     },
     delete: async (id) => {
-        return await knex('posts').where({id:id})
-        .del()
+        return await knex('posts').where({ id: id })
+            .del()
             .then((row) => {
                 return row
             }).catch(err => {
@@ -62,7 +62,7 @@ const Posts = {
     },
     deleteAll: async () => {
         return await knex('posts')
-        .del()
+            .del()
             .then((row) => {
                 return row
             }).catch(err => {

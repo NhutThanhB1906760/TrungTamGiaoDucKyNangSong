@@ -2,8 +2,8 @@ const knex = require('knex')(require('../database/dbConnect'));
 
 const BillingInfomation = {
     create: async (payload) => {
-        return await knex('billing_infomation')
-            .insert({ payment_methods: payload.payment_methods,payment_amount:payload.payment_amount,personnel_id:payload.personnel_id,regInfor_id:payload.regInfor_id})
+        return await knex('billing_information')
+            .insert(payload)
             .then((row) => {
                 return row
             }).catch(err => {
@@ -11,7 +11,7 @@ const BillingInfomation = {
             })
     },
     update: async (id, payload) => {
-        return await knex('billing_infomation').where({ id: id })
+        return await knex('billing_information').where({ id: id })
             .update(payload)
             .then((row) => {
                 return row
@@ -20,7 +20,7 @@ const BillingInfomation = {
             })
     },
     find: async (payload) => {
-        return await knex('billing_infomation').where(payload)
+        return await knex('billing_information').where(payload)
             .select("*")
             .then((row) => {
                 return row
@@ -29,13 +29,13 @@ const BillingInfomation = {
             })
     },
     getAll: async () => {
-        // return await knex('billing_infomation')
-        //     .select('billing_infomation.*',
+        // return await knex('billing_information')
+        //     .select('billing_information.*',
         //     'promotion_time.*','promotion_groups.*'
-        //     ).join('promotion_time', 'billing_infomation.promotionTime_id', 'promotion_time.id_promotionTime')
-        //     .join('billing_infomation_promotionGroups','billing_infomation.id_billing_infomation','billing_infomation_promotionGroups.billing_infomation_id')
-        //     .join('promotion_groups','promotion_groups.id_promotionGroups','billing_infomation_promotionGroups.promotionGroups_id')
-        //     .where('id_billing_infomation',15)
+        //     ).join('promotion_time', 'billing_information.promotionTime_id', 'promotion_time.id_promotionTime')
+        //     .join('billing_information_promotionGroups','billing_information.id_billing_information','billing_information_promotionGroups.billing_information_id')
+        //     .join('promotion_groups','promotion_groups.id_promotionGroups','billing_information_promotionGroups.promotionGroups_id')
+        //     .where('id_billing_information',15)
         //     .then((row) => {
         //         console.log(row);
         //         return row
@@ -43,7 +43,7 @@ const BillingInfomation = {
         //         throw err
         //     })
 
-        return await knex('billing_infomation')
+        return await knex('billing_information')
             .select('*')
             .then((row) => {
                 return row
@@ -52,7 +52,7 @@ const BillingInfomation = {
             })
     },
     delete: async (id) => {
-        return await knex('billing_infomation').where({id:id})
+        return await knex('billing_information').where({id:id})
         .del()
             .then((row) => {
                 return row
@@ -61,7 +61,7 @@ const BillingInfomation = {
             })
     },
     deleteAll: async () => {
-        return await knex('billing_infomation')
+        return await knex('billing_information')
         .del()
             .then((row) => {
                 return row

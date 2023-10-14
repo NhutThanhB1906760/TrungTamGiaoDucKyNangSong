@@ -3,7 +3,18 @@ const knex = require('knex')(require('../database/dbConnect'));
 const RegInfo = {
     create: async (payload) => {
         return await knex('registration_information')
-            .insert({ class_id: payload.class_id,subcribers_id:payload.subcribers_id,fees_calculated:payload.fees_calculated})
+            .insert(payload)
+            .then((row) => {
+                return row
+            }).catch(err => {
+                throw err
+            })
+    },
+    countNumber: async (id) => {
+        return await knex('registration_information')
+            .select('*')
+            .where('class_id', id)
+            .whereNot('status', 2)
             .then((row) => {
                 return row
             }).catch(err => {
@@ -21,7 +32,7 @@ const RegInfo = {
     },
     find: async (payload) => {
         return await knex('registration_information').where(payload)
-            .select("*")
+            .select("*").orderBy('create_at', 'desc')
             .then((row) => {
                 return row
             }).catch(err => {
@@ -44,7 +55,7 @@ const RegInfo = {
         //     })
 
         return await knex('registration_information')
-            .select('*')
+            .select('*').orderBy('create_at', 'desc')
             .then((row) => {
                 return row
             }).catch(err => {
@@ -52,8 +63,8 @@ const RegInfo = {
             })
     },
     delete: async (id) => {
-        return await knex('registration_information').where({id:id})
-        .del()
+        return await knex('registration_information').where({ id: id })
+            .del()
             .then((row) => {
                 return row
             }).catch(err => {
@@ -62,7 +73,7 @@ const RegInfo = {
     },
     deleteAll: async () => {
         return await knex('registration_information')
-        .del()
+            .del()
             .then((row) => {
                 return row
             }).catch(err => {

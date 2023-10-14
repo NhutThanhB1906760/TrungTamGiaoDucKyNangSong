@@ -4,7 +4,7 @@ const path = require('path');
 const Files = {
     create: async (payload) => {
         return await knex('files')
-            .insert({ name: payload.name, name_change: payload.name_change, link: payload.link, type: payload.type, account_id: payload.account_id, courses_id: payload.courses_id })
+            .insert(payload)
             .then((row) => {
                 return row
             }).catch(err => {
@@ -15,6 +15,15 @@ const Files = {
     find: async (payload) => {
         return await knex('files').where(payload)
             .select("*")
+            .then((row) => {
+                return row
+            }).catch(err => {
+                throw err
+            })
+    },
+    update: async (id, payload) => {
+        return await knex('files').where({ id: id })
+            .update(payload)
             .then((row) => {
                 return row
             }).catch(err => {

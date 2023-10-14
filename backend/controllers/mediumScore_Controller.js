@@ -15,7 +15,7 @@ const MediumScoreController = {
     update: async (req, res) => {
         try {
             // console.log(req.body);
-            const user = await MediumScore.update(req.params.id,req.body)
+            const user = await MediumScore.update(req.body)
             res.status(200).json(user);
         } catch (err) {
             res.status(500).json(err);

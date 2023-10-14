@@ -3,7 +3,7 @@ const knex = require('knex')(require('../database/dbConnect'));
 const Personnel = {
     create: async (payload) => {
         return await knex('personnel')
-            .insert({ name: payload.name, birthday: payload.birthday, sex: payload.sex, phone: payload.phone, address: payload.address, email: payload.email,degree:payload.degree,description:payload.description,position_id:payload.position_id })
+            .insert(payload)
             .then((row) => {
                 return row
             }).catch(err => {

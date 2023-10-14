@@ -3,7 +3,7 @@ const knex = require('knex')(require('../database/dbConnect'));
 const Class = {
     create: async (payload) => {
         return await knex('class')
-            .insert({ name: payload.name,startTime:payload.startTime,endTime:payload.endTime,expression:payload.expression,quantity:payload.quantity,courses_id:payload.courses_id,personnel_id:payload.personnel_id,rooms_id:payload.rooms_id})
+            .insert(payload)
             .then((row) => {
                 return row
             }).catch(err => {
@@ -44,7 +44,7 @@ const Class = {
         //     })
 
         return await knex('class')
-            .select('*')
+            .select('*').orderBy('startTime', 'desc')
             .then((row) => {
                 return row
             }).catch(err => {

@@ -3,7 +3,7 @@ const knex = require('knex')(require('../database/dbConnect'));
 const Assessment = {
     create: async (payload) => {
         return await knex('assessment')
-            .insert({ rate: payload.rate,content:payload.content,class_id:payload.class_id,subcribers_id:payload.subcribers_id})
+            .insert(payload)
             .then((row) => {
                 return row
             }).catch(err => {
@@ -21,7 +21,7 @@ const Assessment = {
     },
     find: async (payload) => {
         return await knex('assessment').where(payload)
-            .select("*")
+            .select("*").orderBy('create_at', 'desc')
             .then((row) => {
                 return row
             }).catch(err => {
@@ -29,22 +29,8 @@ const Assessment = {
             })
     },
     getAll: async () => {
-        // return await knex('assessment')
-        //     .select('assessment.*',
-        //     'promotion_time.*','promotion_groups.*'
-        //     ).join('promotion_time', 'assessment.promotionTime_id', 'promotion_time.id_promotionTime')
-        //     .join('assessment_promotionGroups','assessment.id_assessment','assessment_promotionGroups.assessment_id')
-        //     .join('promotion_groups','promotion_groups.id_promotionGroups','assessment_promotionGroups.promotionGroups_id')
-        //     .where('id_assessment',15)
-        //     .then((row) => {
-        //         console.log(row);
-        //         return row
-        //     }).catch(err => {
-        //         throw err
-        //     })
-
         return await knex('assessment')
-            .select('*')
+            .select('*').orderBy('create_at', 'desc')
             .then((row) => {
                 return row
             }).catch(err => {

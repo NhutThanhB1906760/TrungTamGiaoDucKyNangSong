@@ -3,15 +3,15 @@ const knex = require('knex')(require('../database/dbConnect'));
 const MediumScore = {
     create: async (payload) => {
         return await knex('medium_score')
-            .insert({ class_id: payload.class_id,subcribers_id:payload.subcribers_id,score:payload.score})
+            .insert(payload)
             .then((row) => {
                 return row
             }).catch(err => {
                 throw err
             })
     },
-    update: async (id, payload) => {
-        return await knex('medium_score').where({ id: id })
+    update: async ( payload) => {
+        return await knex('medium_score').where({ class_id: payload.class_id,subscribers_id:payload.subscribers_id })
             .update(payload)
             .then((row) => {
                 return row
@@ -21,7 +21,7 @@ const MediumScore = {
     },
     find: async (payload) => {
         return await knex('medium_score').where(payload)
-            .select("*")
+            .select("*").orderBy('create_at', 'desc')
             .then((row) => {
                 return row
             }).catch(err => {
@@ -44,7 +44,7 @@ const MediumScore = {
         //     })
 
         return await knex('medium_score')
-            .select('*')
+            .select('*').orderBy('create_at', 'desc')
             .then((row) => {
                 return row
             }).catch(err => {

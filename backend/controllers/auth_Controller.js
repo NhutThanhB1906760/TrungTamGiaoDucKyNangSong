@@ -1,7 +1,8 @@
 const Auth = require("../models/auth_Model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const sendEmail = require('../sendEmail/sendEmail')
+const Subcriber = require("../models/subscribers_Model")
 let refreshTokens = [];
 
 const authController = {
@@ -11,19 +12,52 @@ const authController = {
       const salt = await bcrypt.genSalt(10);
       const hashed = await bcrypt.hash(req.body.password, salt);
 
-      //Create new user
-      const payload = {
+      const accountInfo = {
         username: req.body.username,
-        name: req.body.name,
         password: hashed,
-      };
+        role: req.body.role,
+        access: req.body.access,
+        personnel_id: req.body?.personnel_id,
+        subscribers_id: req.body?.subscribers_id
+      }
 
       //Save user to DB
-      const auth = new Auth()
-      const user = await auth.register(payload);
-      res.status(200).json(user);
+      if (req.body.role == 3) {
+        const payload = {
+          name: req.body.name,
+          sex: req.body.sex,
+          phone: req.body.phone,
+          email: req.body.email,
+          address: req.body?.address,
+          birthday: req.body.birthday
+        };
+        const subInfo = await Subcriber.create(payload)
+        if (subInfo) {
+          accountInfo.subscribers_id = subInfo[0]
+          const auth = new Auth()
+          const user = await auth.register(accountInfo);
+          console.log(user);
+          res.status(200).json(user);
+        }
+
+      }
+      else {
+        const auth = new Auth()
+        const user = await auth.register(accountInfo);
+        res.status(200).json(user);
+      }
+
+      const mailOptions = {
+        from: process.env.GMAIL_NAME, // Email của bạn
+        to: 'real07123456@gmail.com', // Email người nhận
+        subject: 'Cấp tài khoản truy cập', // Tiêu đề email
+        text: `Username: ${req.body.username} và Password: ${req.body.password}` // Nội dung email
+      };
+      if (payload.personnel_id) {
+        sendEmail(mailOptions)
+      }
     } catch (err) {
-      res.status(500).json(err);
+      res.send(undefined).status(500);
     }
   },
 
@@ -55,20 +89,33 @@ const authController = {
       const auth = new Auth()
       var user = await auth.findOne(req.body.username)
       // var e=await auth.update(800,{username:'ppp5',name:'uuu'})
-      console.log(e);
+      console.log(user);
       if (!user) {
-        res.status(404).json("Incorrect username");
+        res.json(false).status(404);
+        return
       }
       const validPassword = await bcrypt.compare(
         req.body.password,
         user.password
       );
       if (!validPassword) {
-        res.status(404).json("Incorrect password");
+        res.json(false).status(404);
+        return
+
       }
       if (user && validPassword) {
         //Generate access token
-        const accessToken = authController.generateAccessToken(user);
+        console.log(user);
+        let data = {}
+        if (user.personnel_id !== null) {
+          data.id = user.personnel_id
+          data.role = user.role
+        }
+        else {
+          data.id = user.subscribers_id
+          data.role = user.role
+        }
+        const accessToken = authController.generateAccessToken(data);
         //Generate refresh token
         // const refreshToken = authController.generateRefreshToken(user);
         // refreshTokens.push(refreshToken);
@@ -80,15 +127,14 @@ const authController = {
           sameSite: "strict",
           maxAge: 86400
         });
-        res.cookie("user", [user.id,user.role], {
-          httpOnly: true,
-          secure: false,
-          path: "/",
-          sameSite: "strict",
-          maxAge: 86400
-        });
+        // res.cookie("userA", JSON.stringify(data), {
+        //   httpOnly: true,
+        //   secure: false,
+        //   sameSite: "strict",
+        //   maxAge: 86400
+        // });
         const { password, ...others } = user;
-        res.status(200).json({ ...others, accessToken });
+        res.status(200).json(data);
       }
     } catch (err) {
       res.status(500).json(err);
@@ -130,11 +176,39 @@ const authController = {
     //Clear cookies when user logs out
     // refreshTokens = refreshTokens.filter((token) => token !== req.body.token);
     res.clearCookie("accessToken");
+    res.clearCookie("user");
     res.status(200).json("Logged out successfully!");
   },
 
-  findOne: async(req,res)=>{
-    
+  findAccountPer: async (req, res) => {
+
+    try {
+      const auth = new Auth()
+      const user = await auth.findAccountPer();
+      res.status(200).json(user);
+    } catch (err) {
+      res.send(undefined).status(500);
+    }
+  },
+  deleteAccount: async (req, res) => {
+
+    try {
+      const auth = new Auth()
+      const user = await auth.deleteOne(req.params.id);
+      res.status(200).json(user);
+    } catch (err) {
+      res.send(undefined).status(500);
+    }
+  },
+  getAll: async (req, res) => {
+
+    try {
+      const auth = new Auth()
+      const user = await auth.getAll();
+      res.status(200).json(user);
+    } catch (err) {
+      res.send(undefined).status(500);
+    }
   }
 };
 

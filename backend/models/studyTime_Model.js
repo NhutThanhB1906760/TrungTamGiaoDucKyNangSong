@@ -72,4 +72,4 @@ const StudyTime = {
 }
 
 
-module.exports = StudyTime
+module.exports = StudyTime 

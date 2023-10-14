@@ -11,8 +11,9 @@ router.post("/refresh", authController.requestRefreshToken);
 //LOG IN
 router.post("/login", authController.loginUser);
 //LOG OUT
-router.post("/logout", verifyTokenAndAdmin, authController.logOut);
+router.post("/logout", authController.logOut);
+router.get('/findAcPer',authController.findAccountPer)
+router.get('/',authController.getAll)
 
-router.get('/:id',)
-
+router.delete('/:id',authController.deleteAccount)
 module.exports = router;
