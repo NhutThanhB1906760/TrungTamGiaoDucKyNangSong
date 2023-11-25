@@ -8,7 +8,7 @@
             </template>
         </va-carousel>
     </div>
-    <div class="grid grid-cols-12 gap-4 ">
+    <div  class="grid grid-cols-12 gap-4 ">
         <div class="md:col-span-8 lg:col-span-8 col-span-12 ">
             <va-card class="p-3 mb-4">
                 <h3 class="va-h6 bg-red-500  p-1 uppercase">
@@ -74,7 +74,7 @@ import PromotionTimeService from '@/api_services/promotion_time.service'
 import PostsService from '@/api_services/posts.service'
 import FilesService from '@/api_services/files.service'
 
-
+const show=ref(false)
 onMounted(async () => {
     courses.value = await CoursesService.getAll()
     let promotion = await PromotionTimeService.getAll()
@@ -84,7 +84,8 @@ onMounted(async () => {
         if (new Date() >= new Date(a.startTime) && new Date() <= new Date(a.endTime)) {
             return { ...i }
         }
-    })
+    }).filter(item => item !== undefined);
+    console.log( coursPro.value);
     let img = await FilesService.getAll()
     posts.value = await PostsService.getAll()
     posts.value = posts.value.map(i => {
@@ -98,6 +99,7 @@ onMounted(async () => {
         }
     })
     posts.value = posts.value.slice(0, 5)
+    show.value=true
 })
 const posts = ref([])
 const courses = ref([])

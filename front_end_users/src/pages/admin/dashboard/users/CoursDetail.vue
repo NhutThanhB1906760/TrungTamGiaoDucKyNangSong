@@ -269,7 +269,7 @@ watch(route, (to, from) => {
     id.value = to.params.id;
     console.log(to.params.id);
     getData()
-    selectClass.value=[]
+    selectClass.value = []
 });
 
 onMounted(async () => {
@@ -369,11 +369,18 @@ async function submitClass() {
         training_data: arr
     }
     console.log(data);
-    let select = await SelectClassService.get(data)
-    selectClass.value = arr.filter(y => y.id == select)
-    showLoading.value = false
+    if (data.training_data.length != 0) {
+        let select = await SelectClassService.get(data)
+        selectClass.value = arr.filter(y => y.id == select)
+        showLoading.value = false
+        console.log(select);
+    }
+    else{
+        showLoading.value = false
+        init({ message: 'Không có lớp học nào trong khóa học', color: 'warning' })
 
-    console.log(select);
+    }
+
 }
 function changeTime(e) {
     const dateTime = new Date(e);

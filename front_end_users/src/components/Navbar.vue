@@ -36,7 +36,7 @@
                         <div class="flex flex-shrink-0 items-center text-4xl font-bold text-blue-600">
                             <!-- <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                                 alt="Your Company"> -->
-                            <router-link :to="{name:'home'}">
+                            <router-link :to="{ name: 'home' }">
                                 LSEC
 
                             </router-link>
@@ -46,14 +46,14 @@
                                 <template v-for="i in menu" :key="i">
 
                                     <router-link :to="{ name: i.namePath }"
-                                        class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2  font-medium">{{
+                                        class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md lg:px-3 lg:py-2 whitespace-nowrap font-medium">{{
                                             i.text }}</router-link>
 
                                 </template>
                                 <va-dropdown trigger="hover" placement="bottom-left" class="flex items-center">
                                     <template #anchor>
                                         <p
-                                            class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2  font-medium">
+                                            class="text-gray-300 hover:bg-gray-700 hover:text-white whitespace-nowrap rounded-md lg:px-3 lg:py-2  font-medium">
                                             Khóa học</p>
                                     </template>
 
@@ -61,7 +61,7 @@
                                         <template v-for="i in courses" :key="i">
                                             <div class="mb-2">
                                                 <router-link :to="{ name: 'coursDetail', params: { id: i?.id } }"
-                                                    class="text-black  hover:text-green-400 rounded-md  text-md font-medium">{{
+                                                    class="text-black  hover:text-green-400 rounded-md  text-lg font-medium">{{
                                                         i?.name }}</router-link>
 
                                             </div>
@@ -96,25 +96,30 @@
                                         </template>
 
 
-                                        <va-dropdown-content>
+                                        <va-dropdown-content class="text-lg">
                                             <template v-for="i in privateLogin" :key="i">
-                                                <div class="mb-2">
+                                                <div class=" flex gap-1">
+                                                    <div v-html="i.icon"></div>
                                                     <router-link :to="{ name: i.namePath }"
-                                                        class="text-black  hover:text-green-400 rounded-md  text-md font-medium">{{
+                                                        class="text-black  hover:text-green-400 rounded-md  font-medium">{{
                                                             i.text }}</router-link>
 
                                                 </div>
                                             </template>
-                                            <div class="text-black  hover:text-green-400 rounded-md  text-md font-medium cursor-pointer"
-                                                @click="logOut">Đăng xuất</div>
+                                            <div class="flex gap-1">
+                                                <i class="fa-solid fa-right-from-bracket"></i>
+                                                <div class="text-black  hover:text-green-400 rounded-md   font-medium cursor-pointer"
+                                                    @click="logOut">Đăng xuất</div>
+                                            </div>
+
 
                                         </va-dropdown-content>
                                     </va-dropdown>
 
                                 </button>
-                                <div v-else class="flex items-center sm:w-[10em] ">
+                                <div v-else class="md:flex items-center  hidden">
                                     <router-link :to="{ name: 'login' }">
-                                        <va-button color="info"  gradient class="w-full  whitespace-nowrap">
+                                        <va-button color="info" gradient class="w-full  whitespace-nowrap">
                                             Đăng nhập
                                         </va-button>
                                     </router-link>
@@ -164,6 +169,20 @@
 
                 </div>
             </div>
+            <div class="flex items-center justify-center md:hidden pb-2">
+                <router-link :to="{ name: 'login' }">
+                    <va-button color="info" gradient class="w-full  whitespace-nowrap">
+                        Đăng nhập
+                    </va-button>
+                </router-link>
+                <router-link :to="{ name: 'register' }">
+                    <va-button color="danger" gradient class="ml-3 w-full whitespace-nowrap">
+                        Đăng ký
+                    </va-button>
+                </router-link>
+
+
+            </div>
         </nav>
     </div>
 </template>
@@ -192,11 +211,11 @@ const courses = ref([])
 const user = ref()
 const img = ref([])
 let privateLogin = [
-    { namePath: 'privateInfo', text: 'Thông tin cá nhân' },
-    { namePath: 'RegInfo', text: 'Thông tin đăng ký' },
-    { namePath: 'classView', text: 'Lớp học của bạn' },
-    { namePath: 'schedule', text: 'Lịch học' },
-    { namePath: 'studyResult', text: 'Kết quả học tập' },
+    { namePath: 'privateInfo', text: 'Thông tin cá nhân', icon: `<i class="fa-solid fa-user"></i>` },
+    { namePath: 'RegInfo', text: 'Thông tin đăng ký', icon: `<i class="fa-solid fa-registered"></i>` },
+    { namePath: 'classView', text: 'Lớp học của bạn', icon: `<i class="fa-solid fa-school"></i>` },
+    { namePath: 'schedule', text: 'Lịch học', icon: `<i class="fa-solid fa-calendar-days"></i>` },
+    { namePath: 'studyResult', text: 'Kết quả học tập', icon: `<i class="fa-solid fa-graduation-cap"></i>` },
 ]
 let menu = [
     { namePath: 'home', text: 'Trang chủ' },

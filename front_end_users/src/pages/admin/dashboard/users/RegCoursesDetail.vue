@@ -5,7 +5,7 @@
             danh sách đăng ký khóa học
         </h3>
         <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-6 mb-6">
-            <va-input v-model="filter" class="col-span-5" placeholder="Filter..." />
+            <va-input v-model="filter" class="col-span-5" placeholder="Tìm kiếm..." />
         </div>
         <va-data-table :items="items" :columns="columns" :per-page="perPage" :current-page="currentPage" :filter="filter"
             @filtered="filtered = $event.items">
@@ -187,7 +187,7 @@ const payment = async (e) => {
 
         const response = await axios.post('http://localhost:3000/api/vnpay/create_payment_url', data).then(response => {
             console.log('Phản hồi từ backend:', response.data);
-            const newTab = window.location.href=response.data
+            const newTab = window.location.href = response.data
             if (newTab) {
                 newTab.focus();
             } else {

@@ -26,5 +26,9 @@
     "python-shell": "^5.0.0",
     "qs": "^6.11.2",
     "set-tz": "^0.2.0"
+  },
+  "devDependencies": {
+    "sequelize": "^6.33.0",
+    "sequelize-cli": "^6.2.0"
   }
 }

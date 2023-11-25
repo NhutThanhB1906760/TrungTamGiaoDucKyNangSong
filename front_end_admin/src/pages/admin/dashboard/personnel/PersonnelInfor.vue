@@ -13,7 +13,7 @@
         <Loading :show="showLoading" />
         <!-- <DataTableVue v-if="items.length > 0" :data="items" :col="columns" :edit="editCours" :del="delConfirm" /> -->
         <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-6 mb-6">
-            <va-input v-model="filter" class="col-span-5" placeholder="Filter..." />
+            <va-input v-model="filter" class="col-span-5" placeholder="Tìm kiếm..." />
         </div>
         <va-data-table :items="items" :columns="columns" :per-page="perPage" :current-page="currentPage" :filter="filter"
             @filtered="filtered = $event.items">

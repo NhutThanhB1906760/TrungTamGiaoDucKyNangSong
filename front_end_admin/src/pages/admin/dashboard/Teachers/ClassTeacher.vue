@@ -5,7 +5,7 @@
             Danh sách lớp giảng dạy
         </h3>
         <div class="grid sm:grid-cols-2 md:grid-cols-5 gap-6 mb-6">
-            <va-input v-model="filter" class="col-span-5" placeholder="Filter..." />
+            <va-input v-model="filter" class="col-span-5" placeholder="Tìm kiếm..." />
         </div>
         <va-data-table :items="classStudy" :columns="columns" :per-page="perPage" :current-page="currentPage"
             :filter="filter" @filtered="filtered = $event.items">
@@ -60,9 +60,9 @@
     </va-card>
 
     <VaModal v-model="showModal" fullscreen stateful hide-default-actions style="--va-modal-padding: 0px" max-width="100%">
-        <div class="min-h-screen relative ">
+        <div class="min-h-screen relative pl-0 md:pl-32">
             <div class="content">
-                <div class="float-right w-3/4 mr-6 lg:mr-12">
+                <div class="float-right w-3/4 md:w-full mr-6 lg:mr-12 ">
                     <h3 class="va-h5 text-blue-400 text-center  uppercase ">
                         {{ itemCours + ' - ' + 'Lớp: ' + itemClass?.name }}
                     </h3>
@@ -82,7 +82,9 @@
             <va-sidebar class="absolute " :minimized="minimized" animated="left">
 
                 <va-accordion>
-                    <va-checkbox v-model="minimized" class="ml-5" label="Đóng" />
+                    <!-- <va-checkbox v-model="minimized" class="ml-5" label="Đóng" /> -->
+                    <i class="fa-solid fa-arrow-right fa-lg cursor-pointer ml-5" v-if="minimized" @click="minimized=false"></i>
+                    <i class="fa-solid fa-arrow-left fa-lg cursor-pointer ml-5" v-else @click="minimized=true"></i>
                     <template v-for="item in items">
                         <va-collapse v-if="item.children" class="cursor-pointer" :key="item.title + 'collapse'" body-color="#00000022">
                             <template #header="{ value: isCollapsed }">
@@ -200,9 +202,9 @@ const pages = computed(() => {
         : classStudy.value.length;
 })
 const columns = [
-    { key: "name", label: 'Tên lớp', sortable: true },
+    { key: "name", label: 'Tên lớp', sortable: true,width: 30 },
     { key: "cours_name", label: 'Khóa học', sortable: true },
-    { key: "quantityReg", label: 'Số lượng đăng ký', sortable: true },
+    { key: "quantityReg", label: 'Số lượng đăng ký', sortable: true,width: 10 },
     { key: "startTime", label: 'Ngày bắt đầu', sortable: true },
     { key: "endTime", label: 'Ngày kết thúc', sortable: true },
     { key: "expression", label: 'Hình thức', },
